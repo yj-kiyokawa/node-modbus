@@ -26,6 +26,9 @@ class ReadInputRegistersResponseBody extends ModbusResponseBody {
   static fromBuffer (buffer) {
     let fc = buffer.readUInt8(0)
     let byteCount = buffer.readUInt8(1)
+    if (2 + 2 + byteCount > buffer.length) {
+      return null
+    }
     let payload = buffer.slice(2, 2 + byteCount)
 
     if (fc !== 0x04) {
@@ -83,7 +86,8 @@ class ReadInputRegistersResponseBody extends ModbusResponseBody {
     payload.writeUInt8(this._fc, 0)
     payload.writeUInt8(this.length, 1)
     this._values.forEach(function (value, i) {
-      payload.writeUInt8(value, 2 + i)
+      payload.writeUInt16BE(value, 2 + i * 2)
+      // payload.writeUInt8(value, 2 + i)
     })
 
     return payload
