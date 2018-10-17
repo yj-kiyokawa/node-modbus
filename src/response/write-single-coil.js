@@ -56,7 +56,7 @@ class WriteSingleCoilResponseBody extends ModbusResponseBody {
 
     payload.writeUInt8(this._fc, 0)
     payload.writeUInt16BE(this._address, 1)
-    payload.writeUInt16BE(this._value, 3)
+    payload.writeUInt16BE(this._value ? 0xff00 : 0x0000, 3)
 
     return payload
   }

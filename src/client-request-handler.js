@@ -105,6 +105,7 @@ class ModbusClientRequestHandler {
       debug('response is a exception')
       userRequest.reject({
         'err': MODBUS_EXCEPTION,
+        'message': response.body.message,
         'response': response
       })
       this._clearCurrentRequest()
